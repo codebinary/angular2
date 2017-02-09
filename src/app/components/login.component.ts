@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 
 //Importamos los services
 import { LoginService } from '../services/login.service';
@@ -18,16 +19,44 @@ export class LoginComponent implements OnInit {
 	//Aqui guardaremos los datos del usuario
 	public user;
 
+	public token;
+	public identity;
+
+
 	//Para cargar el servicio dentro del component utilizamos el constructor
-	constructor(private loginService: LoginService){}
+	constructor(
+		private loginService: LoginService,
+		private route: ActivatedRoute,
+		private router: Router
+
+	){}
 
 	ngOnInit(){
-		//alert(this._loginService.signup())
+		
+		this.route.params.subscribe(
+			params => {
+				let logout = +params["id"];
+				if(logout == 1){
+					localStorage.removeItem('identity');
+					localStorage.removeItem('token');
+					this.identity = null;
+					this.token = null;
+
+					window.location.href = "/login";
+				}
+			}
+		)
+
 		this.user = {
 			"email": "",
 			"password": "",
 			"gethash": "false"
 		};
+
+		let identity = this.loginService.getIdentity();
+		if(identity != null && identity.sub) {
+			this.router.navigate(["/index"]);
+		}
 
 	}
 
@@ -37,7 +66,44 @@ export class LoginComponent implements OnInit {
 		//utilizamos el servicio, utilizamos el método suscribe para recoger la respuesta del servicio
 		this.loginService.signup(this.user).subscribe(
 				response => {
-					console.log(response);
+					let identity = response;
+					this.identity = identity;
+
+					if(this.identity.length <= 1){
+						alert("Error en el servidor");
+					}else{
+						if(!this.identity.status){
+							localStorage.setItem('identity', JSON.stringify(identity));
+
+							//GET TOKEN
+							this.user.gethash = "true";
+							this.loginService.signup(this.user).subscribe(
+								response => {
+									let token = response;
+									this.token = token;
+
+									if(this.token.length <= 0){
+										alert("Error en el servidor");
+									}else{
+										if(!this.token.status){
+											localStorage.setItem('token', token);
+
+											//REDIRECCIÓN
+											window.location.href = "/";
+										}
+									}
+								},
+								error => {
+									this.errorMessage = <any>error;
+									if(this.errorMessage != null) {
+										console.log(this.errorMessage);
+										alert("Error en la peticion");
+									}
+								}
+							);
+
+						}
+					}
 				},
 				error => {
 					this.errorMessage = <any>error;

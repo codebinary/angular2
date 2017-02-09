@@ -26,7 +26,26 @@ var LoginService = (function () {
         var headers = new http_2.Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
         return this.http.post(this.url + "/login", params, { headers: headers })
             .map(function (res) { return res.json(); });
-        //return "HOla desde el servicio";
+    };
+    LoginService.prototype.getIdentity = function () {
+        var identity = JSON.parse(localStorage.getItem('identity'));
+        if (identity != "undefined") {
+            this.identity = identity;
+        }
+        else {
+            this.identity = null;
+        }
+        return this.identity;
+    };
+    LoginService.prototype.getToken = function () {
+        var token = localStorage.getItem('token');
+        if (token != "undefined") {
+            this.token = token;
+        }
+        else {
+            this.token = null;
+        }
+        return this.token;
     };
     LoginService = __decorate([
         core_1.Injectable(), 
