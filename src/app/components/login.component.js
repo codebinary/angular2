@@ -22,7 +22,9 @@ var LoginComponent = (function () {
     }
     LoginComponent.prototype.ngOnInit = function () {
         var _this = this;
+        //Recogemos el parámetro por url para realizar el logout
         this.route.params.subscribe(function (params) {
+            //Con el mas adelante lo convierte en entero
             var logout = +params["id"];
             if (logout == 1) {
                 localStorage.removeItem('identity');
@@ -32,14 +34,17 @@ var LoginComponent = (function () {
                 window.location.href = "/login";
             }
         });
+        //alert(this._loginService.signup())
         this.user = {
             "email": "",
             "password": "",
             "gethash": "false"
         };
         var identity = this.loginService.getIdentity();
+        //Si existe el id del usuario
         if (identity != null && identity.sub) {
             this.router.navigate(["/index"]);
+            console.log("entr");
         }
     };
     LoginComponent.prototype.onSubmit = function () {
@@ -59,6 +64,7 @@ var LoginComponent = (function () {
                     _this.user.gethash = "true";
                     _this.loginService.signup(_this.user).subscribe(function (response) {
                         var token = response;
+                        console.log(response);
                         _this.token = token;
                         if (_this.token.length <= 0) {
                             alert("Error en el servidor");

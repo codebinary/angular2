@@ -26,6 +26,7 @@ var LoginService = (function () {
         var headers = new http_2.Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
         return this.http.post(this.url + "/login", params, { headers: headers })
             .map(function (res) { return res.json(); });
+        //return "HOla desde el servicio";
     };
     LoginService.prototype.getIdentity = function () {
         var identity = JSON.parse(localStorage.getItem('identity'));
@@ -46,6 +47,21 @@ var LoginService = (function () {
             this.token = null;
         }
         return this.token;
+    };
+    //Recibimos como parámetro el user_to_login(hash)
+    LoginService.prototype.register = function (user_to_register) {
+        var json = JSON.stringify(user_to_register);
+        var params = "json=" + json;
+        var headers = new http_2.Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
+        return this.http.post(this.url + "/user/new", params, { headers: headers })
+            .map(function (res) { return res.json(); });
+    };
+    LoginService.prototype.update_user = function (user_to_update) {
+        var json = JSON.stringify(user_to_update);
+        var params = "json=" + json + "&authorization=" + this.getToken();
+        var headers = new http_2.Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
+        return this.http.post(this.url + "/user/edit", params, { headers: headers })
+            .map(function (res) { return res.json(); });
     };
     LoginService = __decorate([
         core_1.Injectable(), 

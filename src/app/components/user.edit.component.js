@@ -8,26 +8,37 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+require('rxjs/add/operator/switchMap');
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 //Importamos los services
 var login_service_1 = require('../services/login.service');
 //importamos el modelo
 var user_1 = require('../model/user');
-var RegisterComponent = (function () {
-    function RegisterComponent(loginService, route, router) {
+var UserEditComponent = (function () {
+    function UserEditComponent(loginService, route, router) {
         this.loginService = loginService;
         this.route = route;
         this.router = router;
-        this.titulo = "Registro";
+        this.titulo = "Actualizar mis datos";
     }
-    RegisterComponent.prototype.ngOnInit = function () {
-        this.user = new user_1.User(1, "user", "", "", "", "", "null");
+    UserEditComponent.prototype.ngOnInit = function () {
+        var identity = this.loginService.getIdentity();
+        if (identity == null) {
+            this.router.navigate(["/index"]);
+        }
+        else {
+            this.user = new user_1.User(identity.sub, identity.role, identity.name, identity.surname, identity.email, identity.password, "null");
+            console.log(this.user);
+        }
     };
-    RegisterComponent.prototype.onSubmit = function () {
+    UserEditComponent.prototype.onSubmit = function () {
         var _this = this;
         console.log(this.user);
-        this.loginService.register(this.user).subscribe(function (response) {
+        if (this.user.password == this.identity.password) {
+            this.user.password = "";
+        }
+        this.loginService.update_user(this.user).subscribe(function (response) {
             _this.status = response.status;
             if (_this.status != "success") {
                 _this.status = "error";
@@ -40,15 +51,15 @@ var RegisterComponent = (function () {
             }
         });
     };
-    RegisterComponent = __decorate([
+    UserEditComponent = __decorate([
         core_1.Component({
-            selector: 'register',
-            templateUrl: 'app/view/register.html',
+            selector: 'user-edit',
+            templateUrl: 'app/view/user.edit.html',
             providers: [login_service_1.LoginService]
         }), 
         __metadata('design:paramtypes', [login_service_1.LoginService, router_1.ActivatedRoute, router_1.Router])
-    ], RegisterComponent);
-    return RegisterComponent;
+    ], UserEditComponent);
+    return UserEditComponent;
 }());
-exports.RegisterComponent = RegisterComponent;
-//# sourceMappingURL=register.component.js.map
+exports.UserEditComponent = UserEditComponent;
+//# sourceMappingURL=user.edit.component.js.map

@@ -1,3 +1,4 @@
+import 'rxjs/add/operator/switchMap';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 
@@ -8,16 +9,18 @@ import { User } from '../model/user';
 
 
 @Component({
-  selector: 'register',
-  templateUrl: 'app/view/register.html',
+  selector: 'user-edit',
+  templateUrl: 'app/view/user.edit.html',
   providers: [LoginService]
 })
-export class RegisterComponent  {
+export class UserEditComponent implements OnInit  {
 
-	public titulo:string = "Registro";
+	public titulo:string = "Actualizar mis datos";
 	public user: User;
 	public errorMessage;
 	public status;
+
+	public identity;
 
 	constructor(
 		private loginService: LoginService,
@@ -26,12 +29,28 @@ export class RegisterComponent  {
 	){}
 
 	ngOnInit(): void{
-		this.user = new User(1, "user", "", "", "", "", "null");
+		let identity = this.loginService.getIdentity();
+		if(identity == null){
+			this.router.navigate(["/index"]);
+		}else{
+			this.user = new User(identity.sub, 
+								identity.role, 
+								identity.name, 
+								identity.surname,
+								identity.email, 
+								identity.password, 
+								"null");
+			console.log(this.user);
+		}
 	}
 
 	onSubmit(){
 		console.log(this.user);
-		this.loginService.register(this.user).subscribe(
+		if(this.user.password == this.identity.password) {
+			this.user.password = "";
+		}
+		
+		this.loginService.update_user(this.user).subscribe(
 			response => {
 				this.status = response.status;
 				if(this.status != "success"){

@@ -8,12 +8,14 @@ import { AppComponent }  from './app.component';
 import { LoginComponent }  from './components/login.component';
 import { RegisterComponent }  from './components/register.component';
 import { DefaultComponent }  from './components/default.component';
+import { UserEditComponent } from './components/user.edit.component';
+
 
 import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   imports:      [ BrowserModule, FormsModule, HttpModule, JsonpModule, AppRoutingModule ],
-  declarations: [ AppComponent, LoginComponent, RegisterComponent, DefaultComponent ],
+  declarations: [ AppComponent, LoginComponent, RegisterComponent, DefaultComponent, UserEditComponent ],
   bootstrap:    [ AppComponent ]
 })
 export class AppModule { }

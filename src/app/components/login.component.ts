@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 
+
 //Importamos los services
 import { LoginService } from '../services/login.service';
 
@@ -22,7 +23,6 @@ export class LoginComponent implements OnInit {
 	public token;
 	public identity;
 
-
 	//Para cargar el servicio dentro del component utilizamos el constructor
 	constructor(
 		private loginService: LoginService,
@@ -32,9 +32,11 @@ export class LoginComponent implements OnInit {
 	){}
 
 	ngOnInit(){
-		
+
+		//Recogemos el parámetro por url para realizar el logout
 		this.route.params.subscribe(
 			params => {
+				//Con el mas adelante lo convierte en entero
 				let logout = +params["id"];
 				if(logout == 1){
 					localStorage.removeItem('identity');
@@ -43,10 +45,11 @@ export class LoginComponent implements OnInit {
 					this.token = null;
 
 					window.location.href = "/login";
+					//this.router.navigate(["/index"]);
 				}
 			}
-		)
-
+		);
+		//alert(this._loginService.signup())
 		this.user = {
 			"email": "",
 			"password": "",
@@ -54,13 +57,16 @@ export class LoginComponent implements OnInit {
 		};
 
 		let identity = this.loginService.getIdentity();
-		if(identity != null && identity.sub) {
+		//Si existe el id del usuario
+		if(identity != null && identity.sub){
 			this.router.navigate(["/index"]);
+			console.log("entr");
 		}
+
 
 	}
 
-	onSubmit(){
+		onSubmit(){
 		console.log(this.user);
 
 		//utilizamos el servicio, utilizamos el método suscribe para recoger la respuesta del servicio
@@ -74,12 +80,13 @@ export class LoginComponent implements OnInit {
 					}else{
 						if(!this.identity.status){
 							localStorage.setItem('identity', JSON.stringify(identity));
-
 							//GET TOKEN
 							this.user.gethash = "true";
+							
 							this.loginService.signup(this.user).subscribe(
 								response => {
 									let token = response;
+									console.log(response);
 									this.token = token;
 
 									if(this.token.length <= 0){

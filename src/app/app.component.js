@@ -9,15 +9,22 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var login_service_1 = require('./services/login.service');
 var AppComponent = (function () {
-    function AppComponent() {
+    function AppComponent(loginService) {
+        this.loginService = loginService;
     }
+    AppComponent.prototype.ngOnInit = function () {
+        this.identity = this.loginService.getIdentity();
+        this.token = this.loginService.getToken();
+    };
     AppComponent = __decorate([
         core_1.Component({
             selector: 'my-app',
             templateUrl: "app/view/layout.html",
+            providers: [login_service_1.LoginService]
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [login_service_1.LoginService])
     ], AppComponent);
     return AppComponent;
 }());
