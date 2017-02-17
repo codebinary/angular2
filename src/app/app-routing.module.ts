@@ -5,6 +5,7 @@ import { LoginComponent }   from './components/login.component';
 import { RegisterComponent } from './components/register.component';
 import { DefaultComponent } from './components/default.component';
 import { UserEditComponent } from './components/user.edit.component';
+import { VideoNewComponent } from './components/video.new.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/index', pathMatch: 'full' },
@@ -12,7 +13,8 @@ const routes: Routes = [
   { path: 'login/:id',  component: LoginComponent },
   { path: 'register',  component: RegisterComponent },
   { path: 'index',  component: DefaultComponent },
-  { path: 'user-edit',  component: UserEditComponent }
+  { path: 'user-edit',  component: UserEditComponent },
+  { path: 'create-video',  component: VideoNewComponent }
 ];
 
 @NgModule({

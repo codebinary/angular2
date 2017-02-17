@@ -17,6 +17,8 @@ var AppComponent = (function () {
     AppComponent.prototype.ngOnInit = function () {
         this.identity = this.loginService.getIdentity();
         this.token = this.loginService.getToken();
+        this.data = this.loginService.getData();
+        console.log(this.data);
     };
     AppComponent = __decorate([
         core_1.Component({

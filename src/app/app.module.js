@@ -17,6 +17,7 @@ var login_component_1 = require('./components/login.component');
 var register_component_1 = require('./components/register.component');
 var default_component_1 = require('./components/default.component');
 var user_edit_component_1 = require('./components/user.edit.component');
+var video_new_component_1 = require('./components/video.new.component');
 var app_routing_module_1 = require('./app-routing.module');
 var AppModule = (function () {
     function AppModule() {
@@ -24,7 +25,7 @@ var AppModule = (function () {
     AppModule = __decorate([
         core_1.NgModule({
             imports: [platform_browser_1.BrowserModule, forms_1.FormsModule, http_1.HttpModule, http_1.JsonpModule, app_routing_module_1.AppRoutingModule],
-            declarations: [app_component_1.AppComponent, login_component_1.LoginComponent, register_component_1.RegisterComponent, default_component_1.DefaultComponent, user_edit_component_1.UserEditComponent],
+            declarations: [app_component_1.AppComponent, login_component_1.LoginComponent, register_component_1.RegisterComponent, default_component_1.DefaultComponent, user_edit_component_1.UserEditComponent, video_new_component_1.VideoNewComponent],
             bootstrap: [app_component_1.AppComponent]
         }), 
         __metadata('design:paramtypes', [])

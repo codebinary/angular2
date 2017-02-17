@@ -13,30 +13,35 @@ var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 //Importamos los services
 var login_service_1 = require('../services/login.service');
+var upload_service_1 = require('../services/upload.service');
 //importamos el modelo
 var user_1 = require('../model/user');
 var UserEditComponent = (function () {
-    function UserEditComponent(loginService, route, router) {
+    function UserEditComponent(loginService, route, router, uploadService) {
         this.loginService = loginService;
         this.route = route;
         this.router = router;
+        this.uploadService = uploadService;
         this.titulo = "Actualizar mis datos";
     }
     UserEditComponent.prototype.ngOnInit = function () {
-        var identity = this.loginService.getIdentity();
-        if (identity == null) {
+        var data = this.loginService.getData();
+        this.data = data;
+        if (data == null) {
             this.router.navigate(["/index"]);
         }
         else {
-            this.user = new user_1.User(identity.sub, identity.role, identity.name, identity.surname, identity.email, identity.password, "null");
+            this.user = new user_1.User(data.sub, data.role, data.name, data.surname, data.email, data.password, "null");
             console.log(this.user);
         }
     };
     UserEditComponent.prototype.onSubmit = function () {
         var _this = this;
-        console.log(this.user);
-        if (this.user.password == this.identity.password) {
+        console.log(this.user.password);
+        console.log(this.data.password);
+        if (this.user.password == this.data.password) {
             this.user.password = "";
+            console.log(this.user);
         }
         this.loginService.update_user(this.user).subscribe(function (response) {
             _this.status = response.status;
@@ -51,13 +56,27 @@ var UserEditComponent = (function () {
             }
         });
     };
+    UserEditComponent.prototype.fileChangeEvent = function (fileInput) {
+        var _this = this;
+        console.log("upload service");
+        this.filesToUpload = fileInput.target.files;
+        var token = this.loginService.getToken();
+        var url = "http://kia.com.pe/videos_app/user/upload-image-user";
+        this.uploadService.makeFileRequest(token, url, ["image"], this.filesToUpload)
+            .then(function (result) {
+            _this.resultUpload = result;
+            console.log(_this.resultUpload);
+        }, function (error) {
+            console.log(error);
+        });
+    };
     UserEditComponent = __decorate([
         core_1.Component({
             selector: 'user-edit',
             templateUrl: 'app/view/user.edit.html',
-            providers: [login_service_1.LoginService]
+            providers: [login_service_1.LoginService, upload_service_1.UploadService]
         }), 
-        __metadata('design:paramtypes', [login_service_1.LoginService, router_1.ActivatedRoute, router_1.Router])
+        __metadata('design:paramtypes', [login_service_1.LoginService, router_1.ActivatedRoute, router_1.Router, upload_service_1.UploadService])
     ], UserEditComponent);
     return UserEditComponent;
 }());

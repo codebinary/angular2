@@ -1,3 +1,19 @@
 .main{
 	margin-top: 66px;
 }
+
+.user-image{
+	width: 35px;
+	height: 35px;
+	overflow: hidden;
+	border-radius: 200px;
+	margin-top: 8px;
+}
+
+.user-image img{
+	margin: 0px;
+	padding: 0px;
+	margin-top: -15px;
+	margin-left: -15px;
+	width: 56px;
+}

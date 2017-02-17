@@ -15,6 +15,8 @@ export class LoginService{
 	public identity;
 	public token;
 
+	public data;
+
 	constructor(private http: Http){}
 
 	//Recibimos como parámetro el user_to_login(hash)
@@ -53,6 +55,17 @@ export class LoginService{
 		}
 
 		return this.token;
+	}
+
+	//Obtenemos los datos viables
+	getData(){
+		let data = JSON.parse(localStorage.getItem('jsonData'));
+		if(data != 'undefined'){
+			this.data = data;
+		}else{
+			this.data = null;
+		}
+		return this.data;
 	}
 
 	//Recibimos como parámetro el user_to_login(hash)

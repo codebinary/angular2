@@ -48,6 +48,17 @@ var LoginService = (function () {
         }
         return this.token;
     };
+    //Obtenemos los datos viables
+    LoginService.prototype.getData = function () {
+        var data = JSON.parse(localStorage.getItem('jsonData'));
+        if (data != 'undefined') {
+            this.data = data;
+        }
+        else {
+            this.data = null;
+        }
+        return this.data;
+    };
     //Recibimos como parámetro el user_to_login(hash)
     LoginService.prototype.register = function (user_to_register) {
         var json = JSON.stringify(user_to_register);

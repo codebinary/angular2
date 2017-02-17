@@ -12,12 +12,14 @@ export class DefaultComponent  {
 
 	public titulo = "Portada";
 	public identity: string;
+	public data: string;
 
 
 	constructor(private loginService: LoginService){}
 
 	ngOnInit(){
 		this.identity = this.loginService.getIdentity();
+		this.data = this.loginService.getData();
 	}
 
 }

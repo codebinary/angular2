@@ -17,6 +17,7 @@ var DefaultComponent = (function () {
     }
     DefaultComponent.prototype.ngOnInit = function () {
         this.identity = this.loginService.getIdentity();
+        this.data = this.loginService.getData();
     };
     DefaultComponent = __decorate([
         core_1.Component({

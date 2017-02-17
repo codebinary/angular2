@@ -62,6 +62,10 @@ var LoginComponent = (function () {
                     localStorage.setItem('identity', JSON.stringify(identity));
                     //GET TOKEN
                     _this.user.gethash = "true";
+                    _this.userData = {
+                        "email": _this.user.email,
+                        "password": _this.user.password
+                    };
                     _this.loginService.signup(_this.user).subscribe(function (response) {
                         var token = response;
                         console.log(response);
@@ -72,6 +76,12 @@ var LoginComponent = (function () {
                         else {
                             if (!_this.token.status) {
                                 localStorage.setItem('token', token);
+                                _this.loginService.signup(_this.userData).subscribe(function (response) {
+                                    var data = response;
+                                    localStorage.setItem('jsonData', JSON.stringify(data));
+                                    console.log(data);
+                                    console.log("SE guardo el json");
+                                });
                                 //REDIRECCIÓN
                                 window.location.href = "/";
                             }

@@ -1,0 +1,51 @@
+<div class="col-md-12">
+	
+	<hr>
+	<h1>{{ titulo }}</h1>
+	<hr>
+
+
+	<form #newVideoForm="ngForm" (ngSubmit)="onSubmit()" class="col-md-4">
+	
+		<div class="form-group">
+			<label for="">Título:</label>
+			<input 	#title="ngModel" 
+					[(ngModel)]="video.title" 
+					ngControl="title"
+					name="name" type="name" class="form-control" required>
+			<span *ngIf="!title.valid && title.touched">El título es obligatorio</span>
+		</div>
+
+		<div class="form-group">
+			<label for="">Descripció:</label>
+			<input 	#description="ngModel" 
+					[(ngModel)]="user.description" 
+					ngControl="description"
+					name="description" type="description" class="form-control" required>
+			<span *ngIf="!description.valid && description.touched">El description es obligatorio</span>
+		</div>
+
+		<div class="form-group">
+			<label for="">Estado:</label>
+			<input 	#email="ngModel" 
+					[(ngModel)]="user.email" 
+					ngControl="email"
+					name="email" type="email" class="form-control" required>
+			<span *ngIf="!email.valid && email.touched">El email es obligatorio</span>
+		</div>
+
+		<div class="form-group">
+			<label for="">Contraseña:</label>
+			<input 	#password="ngModel" 
+					[(ngModel)]="user.password" 
+					ngControl="password"
+					name="password" type="password" class="form-control" required>
+			<span *ngIf="!password.valid && password.touched">El password es obligatorio</span>
+		</div>
+	
+		
+	
+		<input type="submit" value="Enviar" class="btn btn-primary">
+	</form>
+
+</div>

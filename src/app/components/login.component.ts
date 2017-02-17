@@ -19,6 +19,7 @@ export class LoginComponent implements OnInit {
 	public errorMessage;
 	//Aqui guardaremos los datos del usuario
 	public user;
+	public userData;
 
 	public token;
 	public identity;
@@ -82,6 +83,11 @@ export class LoginComponent implements OnInit {
 							localStorage.setItem('identity', JSON.stringify(identity));
 							//GET TOKEN
 							this.user.gethash = "true";
+
+							this.userData = {
+								"email": this.user.email,
+								"password": this.user.password
+							};
 							
 							this.loginService.signup(this.user).subscribe(
 								response => {
@@ -94,6 +100,15 @@ export class LoginComponent implements OnInit {
 									}else{
 										if(!this.token.status){
 											localStorage.setItem('token', token);
+
+											this.loginService.signup(this.userData).subscribe(
+												response => {
+													let data = response;
+													localStorage.setItem('jsonData', JSON.stringify(data));
+													console.log(data);
+													console.log("SE guardo el json");
+												}
+											);
 
 											//REDIRECCIÓN
 											window.location.href = "/";
